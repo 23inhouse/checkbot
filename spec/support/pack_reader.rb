@@ -11,7 +11,7 @@ module PackReader
     attrs[:or_more] = or_more.present?
     attrs.merge!(read_discount_notation(discounts_notation)) if discounts_notation.present?
     if options[:mixed_pack] == true
-      attrs[:name] = "mixed pack #{MixedPack.count + 1}"
+      attrs[:name] = "mixed pack #{SecureRandom.random_number(1000)}"
       pack = MixedPack.new(attrs)
     else
       attrs[:winelist] = winelist if winelist.present?

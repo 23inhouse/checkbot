@@ -1,5 +1,3 @@
-# DEBUG = true
-
 require 'spec_helper'
 
 describe CheckoutBot do

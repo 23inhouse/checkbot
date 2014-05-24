@@ -1,5 +1,3 @@
-# DEBUG = true
-
 # retest the $40T and #2T versions ??  How many tests and which one, probably one of each other type of test
 # price_discount_spec and shipping_discount_spec needs all combinations
 require 'spec_helper'

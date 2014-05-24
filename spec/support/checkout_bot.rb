@@ -3,11 +3,6 @@ DEBUG_SPANNER = false
 # DEBUG = true
 # DEBUG_SPANNER = true
 
-class ViewContext
-  include ActionView::Helpers::NumberHelper
-  include ApplicationHelper
-end
-
 def read_cart_input(seller, cart_string = '')
   @input_cart = read_cart(seller, cart_string, false)
 end
