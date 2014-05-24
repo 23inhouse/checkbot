@@ -12,10 +12,6 @@ class Pack < ActiveRecord::Base
     packed_products.all?(&:product?) if packed_products.present?
   end
 
-  def all_wine?
-    packed_products.all?(&:wine?) if packed_products.present?
-  end
-
   def amount
     return unless amount_discount?
     packed_products.inject(0.0.to_d) { |sum, packed_product| sum + packed_product.amount }
@@ -97,10 +93,6 @@ class Pack < ActiveRecord::Base
     price_discount? || !shipping_discount?
   end
 
-  def producable_type_and_id
-    "Pack_#{id || 0}"
-  end
-
   def quantity
     packed_products.inject(0) { |sum, mp|
       q = mp.packable.is_a?(Pack) ? mp.packable.quantity.to_i : 1
@@ -121,8 +113,8 @@ class Pack < ActiveRecord::Base
     return read_attribute(:shipping_amount_off) if read_attribute(:shipping_amount_off).present?
 
     return unless full_shipping_price
-    return full_shipping_price * read_attribute(:shipping_percentage_off) * 0.01.to_d if read_attribute(:shipping_percentage_off).present?
-    return full_shipping_price - read_attribute(:shipping_price) if read_attribute(:shipping_price).present?
+    # return full_shipping_price * read_attribute(:shipping_percentage_off) * 0.01.to_d if read_attribute(:shipping_percentage_off).present?
+    # return full_shipping_price - read_attribute(:shipping_price) if read_attribute(:shipping_price).present?
   end
   # memoize :shipping_amount_off
 
@@ -145,9 +137,9 @@ class Pack < ActiveRecord::Base
   def shipping_percentage_off
     return read_attribute(:shipping_percentage_off) if read_attribute(:shipping_percentage_off).present?
 
-    return unless full_shipping_price
-    return 100 * read_attribute(:shipping_amount_off) / full_shipping_price if read_attribute(:shipping_amount_off).present?
-    return 100 * (full_shipping_price - read_attribute(:shipping_price)) / full_shipping_price if read_attribute(:shipping_price).present? && full_shipping_price
+    # return unless full_shipping_price
+    # return 100 * read_attribute(:shipping_amount_off) / full_shipping_price if read_attribute(:shipping_amount_off).present?
+    # return 100 * (full_shipping_price - read_attribute(:shipping_price)) / full_shipping_price if read_attribute(:shipping_price).present? && full_shipping_price
   end
   # memoize :shipping_percentage_off
 
@@ -155,32 +147,14 @@ class Pack < ActiveRecord::Base
     return read_attribute(:shipping_price) if read_attribute(:shipping_price).present?
 
     return unless full_shipping_price
-    return full_shipping_price - read_attribute(:shipping_amount_off) if read_attribute(:shipping_amount_off).present?
-    return full_shipping_price * (100 - read_attribute(:shipping_percentage_off)) * 0.01.to_d if read_attribute(:shipping_percentage_off).present?
+    # return full_shipping_price - read_attribute(:shipping_amount_off) if read_attribute(:shipping_amount_off).present?
+    # return full_shipping_price * (100 - read_attribute(:shipping_percentage_off)) * 0.01.to_d if read_attribute(:shipping_percentage_off).present?
 
-    return full_shipping_price.round(9)
+    # return full_shipping_price.round(9)
   end
   # memoize :shipping_price
 
-  def single_product?
-    straight? && (first_product.wine? || first_product.mixed_pack? || first_product.merchandise?)
-  end
-
-  def single_wine?
-    straight? && first_product.wine?
-  end
-
-  def single_tag?
-    straight? && first_product.tag?
-  end
-
   def specific_mixed_pack?
     type == 'MixedPack'
-  end
-
-private
-
-  def straight?
-    packed_products.size == 1
   end
 end

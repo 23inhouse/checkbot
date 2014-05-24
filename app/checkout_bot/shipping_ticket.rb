@@ -99,14 +99,6 @@ private
     exploded_items.select { |i| i.shipping_tickets.any? { |t| t.pack == discount_pack } || i.shipping_discount_pack == discount_pack }
   end
 
-  def exploded_items_with_same_pack_with_removed_tickets(discount_pack)
-    exploded_items.select { |i|
-      i.shipping_tickets.any? { |t| t.pack == discount_pack } ||
-      i.removed_shipping_tickets.any? { |t| t.pack == discount_pack } ||
-      i.shipping_discount_pack == discount_pack
-    }
-  end
-
   def number_of_bottles_compensated(discount_pack = nil)
     discount_pack ||= pack
     return pack.quantity if !or_more && pack.quantity_discount?

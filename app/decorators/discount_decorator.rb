@@ -22,14 +22,10 @@ class DiscountDecorator
   delegate :shipping_price, :shipping_price?, :to => :discount, :allow_nil => true
   delegate :quantity_discount?, :price_discount?, :to => :discount, :allow_nil => true
 
-  def amount_off_component!
-    amount_off_component(true)
-  end
-
-  def amount_off_component(force = false)
+  def amount_off_component
     return 'free' if free_shipping_discount?
     return number_to_money(shipping_amount_off) if shipping_amount_off?
-    return number_to_money(discount_amount_off) if force ? discount_amount_off.present? : discount_amount_off?
+    return number_to_money(discount_amount_off) if discount_amount_off?
   end
 
   def default_buy_component
@@ -109,24 +105,16 @@ class DiscountDecorator
     ].join
   end
 
-  def percentage_off_component!
-    percentage_off_component(true)
-  end
-
-  def percentage_off_component(force = false)
+  def percentage_off_component
     return 'free' if free_shipping_discount?
     return number_to_percentage(shipping_percentage_off, :precision => 0) if shipping_percentage_off?
-    return number_to_percentage(discount_percentage_off, :precision => 0) if force ? discount_percentage_off.present? : discount_percentage_off?
+    return number_to_percentage(discount_percentage_off, :precision => 0) if discount_percentage_off?
   end
 
-  def price_component!
-    price_component(true)
-  end
-
-  def price_component(force = false)
+  def price_component
     return 'free' if free_shipping_discount?
     return number_to_money(shipping_price) if shipping_price?
-    return number_to_money(discount_price) if force ? discount_price.present? : discount_price?
+    return number_to_money(discount_price) if discount_price?
   end
 
   def save_component
@@ -137,13 +125,6 @@ class DiscountDecorator
   def unit_price_component(wine = nil)
     self.product = wine if wine.present?
     unit_price_component!
-  end
-
-  def unit_price_per_bottle(wine = nil)
-    self.product = wine if wine.present?
-    return if unit_price_component!.blank?
-
-    [unit_price_component!, 'per bottle'].join(' ') if price_discount?
   end
 
   def unit_shipping_discount_component
@@ -161,11 +142,6 @@ private
 
   def buy_or_spend_component
     amount? ? 'spend' : 'buy'
-  end
-
-  def computed_amount
-    return full_price! / quantity if quantity_discount?
-    return amount if amount_discount?
   end
 
   def computed_quantity
@@ -211,13 +187,6 @@ private
     end
   end
 
-  def discount_unit_price
-    return if !price_discount?
-
-    full_price!
-    discount_price / computed_quantity
-  end
-
   def full_price!
     return discount.full_price = price * quantity if quantity_discount? && price.present?
     return discount.full_price = amount if amount_discount?
@@ -233,10 +202,6 @@ private
 
   def or_more_component
     'or more' if or_more?
-  end
-
-  def or_more_saving
-    'at least' if or_more? && (discount_percentage_off? || discount_price?)
   end
 
   def price
@@ -278,11 +243,6 @@ private
   def unit_shipping_price!
     return if !shipping_price! || !computed_quantity
     shipping_price! / computed_quantity
-  end
-
-  def wrapped_discount_component!(component)
-    component = send(:"#{component}!")
-    wrapped_discount_component(component) if component.present?
   end
 
   def wrapped_discount_component(component)

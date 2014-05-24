@@ -8,8 +8,6 @@ class Cart < ActiveRecord::Base
   has_many :winelists, :through => :items
   has_one :order
 
-  include ActionView::Helpers::TextHelper
-
   attr_accessor :messages, :postcode_error
 
   delegate :minimum_bottles_per_order, :to => :seller
@@ -21,10 +19,6 @@ class Cart < ActiveRecord::Base
     end
   end
   memoize :number_of_bottles
-
-  def scd_charges
-    read_attribute(:scd_charges) || 0.0.to_d
-  end
 
   def scd_charges=(value)
     true

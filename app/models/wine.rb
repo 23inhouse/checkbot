@@ -21,8 +21,4 @@ class Wine < ActiveRecord::Base
   def full_name
     "#{year} #{name}"
   end
-
-  def full_price
-    price
-  end
 end

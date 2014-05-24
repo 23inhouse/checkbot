@@ -77,18 +77,6 @@ private
     (amount_with_removed_tickets / divisor).floor * divisor
   end
 
-  def amount_with_same_item(item = nil)
-    item ||= exploded_item.item
-
-    return exploded_items.sum { |exploded_item| exploded_item.item == item ? exploded_item.price : 0.0 } if pack.or_more
-
-    exploded_items.sum do |e|
-      e.item.packable.tags.any? do |t|
-        t == pack.packed_products.first.packable
-      end ? e.price : 0.0
-    end
-  end
-
   def discount_amount_off(full_product_price)
     non_negative_discount(full_product_price - amount_off)
   end
@@ -149,10 +137,6 @@ private
 
   def number_of_bottles
     or_more ? number_of_bottles_with_same_pack : pack.quantity
-  end
-
-  def number_of_removed_bottles
-    or_more ? number_of_removed_bottles_with_same_pack : 0
   end
 
   def percentage_off

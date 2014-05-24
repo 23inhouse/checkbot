@@ -13,10 +13,6 @@ class CheckoutBot
     @exploded_items = []
   end
 
-  def customer_postcode
-    cart.shipping_postcode
-  end
-
   def handling_charges
     return 0.0.to_d unless seller.present?
     seller.handling_charges.round(9)
@@ -50,17 +46,8 @@ class CheckoutBot
     end
   end
 
-  def replace_cart
-    prepare_cart
-    CartGenerator.new(self).replace_cart
-  end
-
   def scd_charges
     ((total_price || 0) * transaction_charge).to_d
-  end
-
-  def seller_postcode
-    seller.address(:winery).postcode if seller.try(:addresses) && seller.address(:winery)
   end
 
   def shipping_and_handling_charges
@@ -270,21 +257,21 @@ private
 
   # ===========================
 
-  def drop_info
-    puts '================================ drop_info ================================'
-    exploded_items.each do |exploded_item|
-      # next unless exploded_item.full_name == '2009 Chardonnay'
-      puts "----- #{exploded_item.full_name}"
-      p "SMP: #{exploded_item.specific_mixed_pack.name if exploded_item.specific_mixed_pack.present?}"
-      price_exclusive_pack_name = exploded_item.price_exclusive_pack.name if exploded_item.price_exclusive_pack.present?
-      shipping_exclusive_pack_name = exploded_item.shipping_exclusive_pack.name if exploded_item.shipping_exclusive_pack.present?
-      p "Exc: D-#{price_exclusive_pack_name}, Sh-#{shipping_exclusive_pack_name}"
-      p "PTks: " + exploded_item.price_tickets.collect { |pt| pt.pack.name }.join(', ')
-      p "PDT: #{exploded_item.price_discount_pack_name}"
-      p "STks: " + exploded_item.shipping_tickets.collect { |pt| pt.pack.name }.join(', ')
-      p "SDT: #{exploded_item.shipping_discount_pack_name}"
-      puts
-    end
-    puts '================================           ================================'
-  end
+  # def drop_info
+  #   puts '================================ drop_info ================================'
+  #   exploded_items.each do |exploded_item|
+  #     # next unless exploded_item.full_name == '2009 Chardonnay'
+  #     puts "----- #{exploded_item.full_name}"
+  #     p "SMP: #{exploded_item.specific_mixed_pack.name if exploded_item.specific_mixed_pack.present?}"
+  #     price_exclusive_pack_name = exploded_item.price_exclusive_pack.name if exploded_item.price_exclusive_pack.present?
+  #     shipping_exclusive_pack_name = exploded_item.shipping_exclusive_pack.name if exploded_item.shipping_exclusive_pack.present?
+  #     p "Exc: D-#{price_exclusive_pack_name}, Sh-#{shipping_exclusive_pack_name}"
+  #     p "PTks: " + exploded_item.price_tickets.collect { |pt| pt.pack.name }.join(', ')
+  #     p "PDT: #{exploded_item.price_discount_pack_name}"
+  #     p "STks: " + exploded_item.shipping_tickets.collect { |pt| pt.pack.name }.join(', ')
+  #     p "SDT: #{exploded_item.shipping_discount_pack_name}"
+  #     puts
+  #   end
+  #   puts '================================           ================================'
+  # end
 end

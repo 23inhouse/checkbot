@@ -12,10 +12,6 @@ class PackedProduct < ActiveRecord::Base
     packable_type == 'Pack'
   end
 
-  def name
-    packable.try(:full_name)
-  end
-
   def product?
     wine? || mixed_pack? || merchandise?
   end

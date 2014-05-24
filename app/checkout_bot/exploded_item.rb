@@ -251,7 +251,7 @@ private
 
   # ===========================
 
-  def drop_best_ticket(tickets)
-    tickets.each { |t| puts "    choose best discount ticket [#{t.pack.name}] for [#{t.exploded_item.full_name}] ==> [#{t.choose_subtotal}]" }
-  end
+  # def drop_best_ticket(tickets)
+  #   tickets.each { |t| puts "    choose best discount ticket [#{t.pack.name}] for [#{t.exploded_item.full_name}] ==> [#{t.choose_subtotal}]" }
+  # end
 end

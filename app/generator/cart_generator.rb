@@ -1,5 +1,5 @@
 class CartGenerator
-  attr_accessor :cart, :checkbot, :exploded_items, :replace
+  attr_accessor :cart, :checkbot, :exploded_items
 
   delegate :handling_charges, :scd_charges, :shipping_charges, :transaction_charge, :to => :checkbot
   delegate :order, :to => :cart
@@ -37,24 +37,13 @@ class CartGenerator
   end
 
   def new_cart
-    @replace = false
-    generate_cart
-  end
-
-  def replace_cart
-    @replace = true
     generate_cart
   end
 
 private
 
   def add_cart
-    if replace
-      cart.items.destroy_all
-      new_cart = cart
-    else
-      new_cart = cart.dup
-    end
+    new_cart = cart.dup
     new_cart.seller = cart.seller
     new_cart.items = []
     new_cart.discount_tallies = []
