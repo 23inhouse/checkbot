@@ -1,5 +1,7 @@
 require 'simplecov'
-SimpleCov.start if !ENV['SIMPLECOV'].nil?
+SimpleCov.start do
+  add_filter '/spec/'
+end if !ENV['SIMPLECOV'].nil?
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
