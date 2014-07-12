@@ -18,3 +18,5 @@ require 'checkbot/models/tag'
 require 'checkbot/models/tally'
 
 require 'checkbot/interpreters/interpretable'
+
+require 'checkbot/interpreters/discountable_interpreter'
