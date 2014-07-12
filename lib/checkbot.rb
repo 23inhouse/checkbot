@@ -1,5 +1,3 @@
-require "checkbot/version"
+require 'checkbot/version'
 
-module Checkbot
-  # Your code goes here...
-end
+require 'checkbot/utilities/money'
