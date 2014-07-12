@@ -24,3 +24,5 @@ require 'checkbot/interpreters/percentage_interpreter'
 
 require 'checkbot/interpreters/discountable_interpreter'
 require 'checkbot/interpreters/taggable_interpreter'
+
+require 'checkbot/interpreters/product_interpreter'
