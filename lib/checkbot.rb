@@ -20,6 +20,7 @@ require 'checkbot/models/tally'
 require 'checkbot/interpreters/interpretable'
 
 require 'checkbot/interpreters/money_interpreter'
+require 'checkbot/interpreters/percentage_interpreter'
 
 require 'checkbot/interpreters/discountable_interpreter'
 require 'checkbot/interpreters/taggable_interpreter'
