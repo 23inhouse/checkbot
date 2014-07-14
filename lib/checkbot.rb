@@ -26,4 +26,5 @@ require 'checkbot/interpreters/discountable_interpreter'
 require 'checkbot/interpreters/savings_interpreter'
 require 'checkbot/interpreters/taggable_interpreter'
 
+require 'checkbot/interpreters/packable_interpreter'
 require 'checkbot/interpreters/product_interpreter'
