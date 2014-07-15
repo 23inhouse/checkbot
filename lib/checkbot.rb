@@ -8,6 +8,7 @@ require 'checkbot/models/taggable'
 
 require 'checkbot/models/pack'
 
+require 'checkbot/models/cart_item'
 require 'checkbot/models/discount'
 require 'checkbot/models/mixed_pack'
 require 'checkbot/models/packable'
