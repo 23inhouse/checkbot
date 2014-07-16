@@ -16,3 +16,5 @@ require 'checkbot/models/packable'
 require 'checkbot/models/product'
 require 'checkbot/models/tag'
 require 'checkbot/models/tally'
+
+require 'checkbot/interpreters/interpretable'
