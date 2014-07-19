@@ -38,6 +38,7 @@ require 'checkbot/interpreters/interpreter'
 
 require 'checkbot/builders/packable_builder'
 
+require 'checkbot/builders/discount_builder'
 require 'checkbot/builders/mixed_pack_builder'
 require 'checkbot/builders/product_builder'
 require 'checkbot/builders/tag_builder'
