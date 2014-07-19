@@ -36,4 +36,5 @@ require 'checkbot/interpreters/totals_interpreter'
 
 require 'checkbot/interpreters/interpreter'
 
+require 'checkbot/builders/product_builder'
 require 'checkbot/builders/tag_builder'
