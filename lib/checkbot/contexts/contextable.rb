@@ -1,8 +1,9 @@
 module Checkbot
   module Contextable
-    attr_accessor :contextables
+    attr_accessor :context, :contextables
 
-    def initialize
+    def initialize(context = Context.new)
+      @context      = context
       @contextables = []
     end
 
