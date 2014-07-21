@@ -332,6 +332,76 @@ module Checkbot
           end
         end
       end
+
+      context "when the input is a mixed pack with products with tags" do
+        let(:type) { :mixed_pack }
+        let(:input) { MixedPack.new('name', :price, packables: packables) }
+        let(:packables) {
+          [
+            Packable.new(product1, quantity: 1),
+            Packable.new(product2, quantity: 1),
+          ]
+        }
+        let(:product1) { Product.new('product1', :price, tags: tags1) }
+        let(:product2) { Product.new('product2', :price, tags: tags2) }
+        let(:tags1) { [tag1, tag2] }
+        let(:tag1) { Tag.new('tag1') }
+        let(:tag2) { Tag.new('tag2') }
+        let(:tags2) { [tag1, tag2] }
+        let(:tag3) { Tag.new('tag1') }
+        let(:tag4) { Tag.new('tag2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([tag1, tag2]) }
+        end
+
+        describe "then the mixed pack product tags are replaced with the context tags" do
+          specify {
+            products = input.packables.collect(&:packable)
+            expect(products.first.tags).to eq(context.tags)
+            expect(products.last.tags).to eq(context.tags)
+          }
+        end
+
+        context "when the mixed pack contains tags with the same name as the product tags" do
+          let(:tag5) { Tag.new('tag1') }
+          let(:input) { MixedPack.new('name', :price, packables: packables, tags: [tag5]) }
+
+          describe "then the duplicates are NOT added to the context" do
+            it { is_expected.to eq([tag1, tag2]) }
+          end
+        end
+      end
+
+      context "when the input is a product with tags" do
+        let(:type) { :product }
+        let(:input) { Product.new('name', :price, tags: tags) }
+        let(:tags) { [tag1, tag2] }
+        let(:tag1) { Tag.new('tag1') }
+        let(:tag2) { Tag.new('tag2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([tag1, tag2]) }
+        end
+
+        describe "then the product tags are replaced with the context tags" do
+          specify {
+            expect(input.tags).to eq(context.tags)
+          }
+        end
+
+        context "when the product contains tags with the same name" do
+          let(:tag3) { Tag.new('tag1') }
+          let(:tags) { [tag1, tag2, tag3] }
+
+          describe "then the duplicates are removed" do
+            it { is_expected.to eq([tag1, tag2]) }
+            specify {
+              expect(input.tags).to eq(context.tags)
+            }
+          end
+        end
+      end
     end
   end
 end
