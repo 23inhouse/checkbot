@@ -24,6 +24,11 @@ module Checkbot
       [item_to_s, price_saving_to_s, shipping_savings_to_s].compact.join(' ')
     end
 
+    def type
+      return :mixed_pack if mixed_pack?
+      return :product    if product?
+    end
+
   private
 
     def item_to_s
