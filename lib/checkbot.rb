@@ -47,6 +47,7 @@ require 'checkbot/builders/tally_builder'
 
 require 'checkbot/contexts/contextable'
 
+require 'checkbot/contexts/cart_context'
 require 'checkbot/contexts/mixed_pack_context'
 require 'checkbot/contexts/product_context'
 require 'checkbot/contexts/tag_context'
