@@ -46,3 +46,5 @@ require 'checkbot/builders/tag_builder'
 require 'checkbot/builders/tally_builder'
 
 require 'checkbot/contexts/contextable'
+
+require 'checkbot/contexts/tag_context'
