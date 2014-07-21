@@ -5,6 +5,8 @@ module Checkbot
     alias_method :discounts, :contextables
 
     def add(discount)
+      discount.packables.each { |packable| packable.packable = context.add(packable.type, packable.packable) }
+
       discounts << discount
       discount
     end

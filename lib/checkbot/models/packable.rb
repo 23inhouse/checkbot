@@ -43,5 +43,11 @@ module Checkbot
         a << '('+name+')'
       }.join
     end
+
+    def type
+      return :mixed_pack if mixed_pack?
+      return :product    if product?
+      return :tag        if tag?
+    end
   end
 end

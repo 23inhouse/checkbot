@@ -96,6 +96,44 @@ module Checkbot
           end
         end
       end
+
+      context "when the input is a discount with mixed packs" do
+        let(:type) { :discount }
+        let(:input) { Discount.new(packables: packables) }
+        let(:packables) {
+          [
+            Packable.new(mixed_pack1, quantity: 1),
+            Packable.new(mixed_pack2, quantity: 1),
+          ]
+        }
+        let(:mixed_pack1) { MixedPack.new('mixed pack 1') }
+        let(:mixed_pack2) { MixedPack.new('mixed pack 2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([mixed_pack1, mixed_pack2]) }
+        end
+
+        describe "then the discount mixed packs are replaced with the context mixed packs" do
+          specify {
+            expect(input.packables.collect(&:packable)).to eq(context.mixed_packs)
+          }
+        end
+
+        context "when the discount contains mixed packs with the same name" do
+          let(:mixed_pack3) { MixedPack.new('mixed pack 1') }
+          let(:packables) {
+            [
+              Packable.new(mixed_pack1, quantity: 1),
+              Packable.new(mixed_pack2, quantity: 1),
+              Packable.new(mixed_pack3, quantity: 1),
+            ]
+          }
+
+          describe "then the duplicates are NOT added to the context" do
+            it { is_expected.to eq([mixed_pack1, mixed_pack2]) }
+          end
+        end
+      end
     end
 
     describe "#products" do
@@ -144,6 +182,44 @@ module Checkbot
           end
         end
       end
+
+      context "when the input is a discount with products" do
+        let(:type) { :discount }
+        let(:input) { Discount.new(packables: packables) }
+        let(:packables) {
+          [
+            Packable.new(product1, quantity: 1),
+            Packable.new(product2, quantity: 1),
+          ]
+        }
+        let(:product1) { Product.new('product 1') }
+        let(:product2) { Product.new('product 2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([product1, product2]) }
+        end
+
+        describe "then the discount products are replaced with the context products" do
+          specify {
+            expect(input.packables.collect(&:packable)).to eq(context.products)
+          }
+        end
+
+        context "when the discount contains products with the same name" do
+          let(:product3) { Product.new('product 1') }
+          let(:packables) {
+            [
+              Packable.new(product1, quantity: 1),
+              Packable.new(product2, quantity: 1),
+              Packable.new(product3, quantity: 1),
+            ]
+          }
+
+          describe "then the duplicates are NOT added to the context" do
+            it { is_expected.to eq([product1, product2]) }
+          end
+        end
+      end
     end
 
     describe "#tags" do
@@ -155,6 +231,38 @@ module Checkbot
         let(:type) { :tag }
         let(:input) { Tag.new('name') }
         it { is_expected.to eq([input]) }
+      end
+
+      context "when the input is a discount with tags" do
+        let(:type) { :discount }
+        let(:input) { Discount.new(packables: packables) }
+        let(:packables) {
+          [
+            Packable.new(tag1, quantity: 1),
+            Packable.new(tag2, quantity: 1),
+          ]
+        }
+        let(:tag1) { Tag.new('tag 1') }
+        let(:tag2) { Tag.new('tag 2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([tag1, tag2]) }
+        end
+
+        describe "then the discount tags are replaced with the context tags" do
+          specify {
+            expect(input.packables.collect(&:packable)).to eq(context.tags)
+          }
+        end
+
+        context "when the discount contains tags with the same name" do
+          let(:tag3) { Tag.new('tag 1') }
+          let(:tags) { [tag1, tag2, tag3] }
+
+          describe "then the duplicates are NOT added to the context" do
+            it { is_expected.to eq([tag1, tag2]) }
+          end
+        end
       end
     end
   end
