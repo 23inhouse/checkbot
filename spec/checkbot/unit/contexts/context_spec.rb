@@ -220,6 +220,44 @@ module Checkbot
           end
         end
       end
+
+      context "when the input is a mixed pack with products" do
+        let(:type) { :mixed_pack }
+        let(:input) { MixedPack.new('name', :price, packables: packables) }
+        let(:packables) {
+          [
+            Packable.new(product1, quantity: 1),
+            Packable.new(product2, quantity: 1),
+          ]
+        }
+        let(:product1) { Product.new('product 1') }
+        let(:product2) { Product.new('product 2') }
+
+        describe "then they are added to the context" do
+          it { is_expected.to eq([product1, product2]) }
+        end
+
+        describe "then the mixed pack products are replaced with the context products" do
+          specify {
+            expect(input.packables.collect(&:packable)).to eq(context.products)
+          }
+        end
+
+        context "when the mixed pack contains products with the same name" do
+          let(:product3) { Product.new('product 1') }
+          let(:packables) {
+            [
+              Packable.new(product1, quantity: 1),
+              Packable.new(product2, quantity: 1),
+              Packable.new(product3, quantity: 1),
+            ]
+          }
+
+          describe "then the duplicates are NOT added to the context" do
+            it { is_expected.to eq([product1, product2]) }
+          end
+        end
+      end
     end
 
     describe "#tags" do
