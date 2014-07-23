@@ -35,3 +35,5 @@ require 'checkbot/interpreters/tally_interpreter'
 require 'checkbot/interpreters/totals_interpreter'
 
 require 'checkbot/interpreters/interpreter'
+
+require 'checkbot/builders/tag_builder'
