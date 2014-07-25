@@ -33,3 +33,5 @@ require 'checkbot/interpreters/packable_interpreter'
 require 'checkbot/interpreters/product_interpreter'
 require 'checkbot/interpreters/tally_interpreter'
 require 'checkbot/interpreters/totals_interpreter'
+
+require 'checkbot/interpreters/interpreter'
